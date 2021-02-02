@@ -47,11 +47,24 @@ class DataAccess:
         else:
             return None
 
-    ## Données pour une région
+    # Données pour une région
     @classmethod
     def get_region(cls, id):
         result = cls.collection.aggregate([
             {'$match': {
                 "fields.code_region": id}
             }])
+        return result
+
+    # Total conso d'une filière
+    @classmethod
+    def get_somme_fil(cls, fil):
+        fil = str(fil)
+        result = cls.db.conso.aggregate([
+            {"$match": {"fields.filiere": fil}},
+            {"$group": {"_id": fil,
+                        "conso_totale": {"$sum": "$fields.conso"}}
+             }
+        ])
+        result = [r for r in result]
         return result
