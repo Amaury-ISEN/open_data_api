@@ -33,11 +33,20 @@ def get_filiere(q: str):
 
 
 # Données d'une région
-@app.get("/items/{id}")
+@app.get("/items/region/{id}")
 def get_region(id: int):
     da.connexion()
     da.del_doc(id)
     data = da.get_region(id)
+    da.deconnexion()
+    return data
+
+
+# Total consommation d'une filière
+@app.get("/items/consofil/{fil}")
+def get_somme_fil(fil: str):
+    da.connexion()
+    data = da.get_somme_fil(fil)
     da.deconnexion()
     return data
 
