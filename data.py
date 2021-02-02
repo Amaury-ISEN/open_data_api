@@ -48,7 +48,6 @@ class DataAccess:
             return None
 
         # # Données pour une région
-
     @classmethod
     def get_region(cls, id):
         result = cls.collection.aggregate([
