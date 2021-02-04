@@ -66,6 +66,7 @@ class DataAccess :
         cls.db.conso.delete_one({"record_id":id})
 
     # Récupérer la consommation totale pour toute une filière
+    @classmethod
     def get_somme_fil(cls, fil):
         fil = str(fil)
         if fil == "gaz": fil = "Gaz"

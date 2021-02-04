@@ -40,13 +40,19 @@ def get_filiere_reg(fil: str = None, reg: int = None):
 #     return data
 
 # Supprimer un document particulier :
-@app.delete("/items/{item_id}") # fonctionne 
+@app.delete("/items/{item_id}")
 def del_doc(item_id: str):
     da.connexion()
     da.del_doc(item_id)
     da.deconnexion()
     return {"Document supprimé"}
 
+@app.get("/items/conso")
+def get_somme_fil(fil: str):
+    da.connexion()
+    data = da.get_somme_fil(fil)
+    da.deconnexion()
+    return data
 
 # # Run avec auto-reload dès que l'on sauvegarde le code :
 # if __name__ == "__main__":
@@ -54,4 +60,4 @@ def del_doc(item_id: str):
 
 # Run sans auto-reload
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8500)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
