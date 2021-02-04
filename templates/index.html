@@ -154,9 +154,10 @@
         <button type="submit">Consommation</button>
     </form>
 
-    {{contenu}}
+    <p id="nombre">{{contenu}}</p>
     <!-- Total, Gaz ou Electricité -->
 
+    <script src="{{url_for('static', filename='js/affichage_chiffres.js')}}"></script>
 
 {% endblock %}
 
