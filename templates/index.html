@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    <h1>Consommation énergétique en France</h1>  
+
+
+    <h2>Région</h2>
+    <label for="select-reg">Filtrer par région</label>
+    <select name="region" id="select-reg">
+        <option value="">--Choisir une région--</option>
+        <option value="0">Toutes régions</option>
+        <option value="11">11 - Île-De-France</option>
+        <option value="11">24 - Centre-Val de Loire</option>
+        <option value="11">27 - Bourgogne-Franche-Comté</option>
+        <option value="11">28 - Normandie</option>
+        <option value="11">32 - Hauts-de-France</option>
+        <option value="11">44 - Grand Est</option>
+        <option value="11">52 - Pays de la Loire</option>
+        <option value="11">53 - Bretagne</option>
+        <option value="11">75 - Nouvelle-Aquitaine</option>
+        <option value="11">76 - Occitanie</option>
+        <option value="11">84 - Auvergne-Rhône-Alpes</option>
+        <option value="11">93 - Provence-Alpes-Côte d'Azur</option>
+        <option value="11">94 - Corse</option>
+    </select>
+
+    <!-- Ce serait bien que ce bloc apparaisse uniquement si une région est choisie ou soit grisé le reste du temps-->
+    <h2>Département</h2>
+    <label for="select-dpt">Filtrer par département</label>
+    <select name="region" id="select-reg">
+        <option value="">--Choisir un département--</option>
+        <option value="1">1 - Ain</option>
+        <option value="2">1 - Ain</option>
+        <option value="3">1 - Ain</option>
+        <option value="4">1 - Ain</option>
+        <option value="5">1 - Ain</option>
+        <option value="7">1 - Ain</option>
+    </select>
+
+    <h2>Filière</h2>
+    <label for="select-fil">Filtrer par filière</label>
+    <!-- Total, Gaz ou Electricité -->
+
+
+{% endblock %}
