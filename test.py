@@ -43,7 +43,7 @@ def get_region(item_id):
 
 
 # Total consommation d'une filière
-@app.get("/items/consofil/{fil}")
+@app.route("/items/consofil/{fil}")
 def get_somme_fil(fil):
     url = URL_API + "/" + fil
     reponse = requests.get(url)
