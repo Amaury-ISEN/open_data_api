@@ -1,26 +1,17 @@
 from typing import Optional
 from fastapi import FastAPI
-import uvicorn  # ASGI server
+from flask.json import jsonify
+import uvicorn # ASGI server
 from data import DataAccess as da
 from fastapi.encoders import jsonable_encoder
 
-# from models import Item
+
 
 app = FastAPI()
 
-
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
-
-
-# Supprimer un document particulier :
-@app.delete("/items/{item_id}")
-def del_doc(item_id: str):
-    da.connexion()
-    da.del_doc(item_id)
-    da.deconnexion()
-    return {"Document supprimé"}
+    return {"Hello":"World"}
 
 
 # Renvoyer les données pour toute une filière (gaz/électricité) :
@@ -31,25 +22,22 @@ def get_filiere(q: str):
     da.deconnexion()
     return data
 
+##################################API-LUIGI########################################################################
 
-# Données d'une région
-@app.get("/items/region/{id}")
-def get_region(id: int):
+@app.get("/items/conso/{code_departement}/{filiere}")
+def get_conso_total_departement(code_departement: str,filiere: str):
     da.connexion()
-    da.del_doc(id)
-    data = da.get_region(id)
+    data = da.get_conso_total_departement(code_departement,filiere)
     da.deconnexion()
     return data
 
-
-# Total consommation d'une filière
-@app.get("/items/consofil/{fil}")
-def get_somme_fil(fil: str):
+@app.put("/items/conso/update/{recordid}/{champs}/{donnee}")
+http://127.0.0.1:9000/items/conso/update/e24759abc1075f7b9ca22823383298c241cba54e/libelle_grand_secteur/petpet
+def put_update_document(recordid: str,champs: str,donnee):
     da.connexion()
-    data = da.get_somme_fil(fil)
+    da.put_update_document(recordid,champs,donnee)
     da.deconnexion()
-    return data
-
+    
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8000)
+    uvicorn.run("api:app", host="127.0.0.1", port=9000,reload=True)

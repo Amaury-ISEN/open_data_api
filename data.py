@@ -1,8 +1,6 @@
-from pymongo import MongoClient, DESCENDING
-import werkzeug
+from pymongo import MongoClient
 
-
-class DataAccess:
+class DataAccess :
     @classmethod
     def connexion(cls):
         cls.client = MongoClient("localhost", 27017)
@@ -15,56 +13,78 @@ class DataAccess:
     @classmethod
     def del_doc(cls, id):
         """Supprime un document en base"""
-        print(id)
         id = str(id)
-        print(id)
-        cls.db.conso.delete_one({"record_id": id})
+        cls.db.conso.delete_one({"record_id":id})
 
     @classmethod
     def get_filiere(cls, q):
         """Affiche toute la filière Electricité/Gaz selon la query passée en Get dans l'URL à l'api."""
         q = str(q)
-        if q == "electricite":
+        if q == "electricite" :
             cur = cls.db.conso.aggregate([
-                {'$match': {
-                    "fields.filiere": "Electricité"}
+                { '$match': {
+                    "fields.filiere":"Electricité"}
                 },
-                {'$unset': "_id"}  # Ne pas prendre les ObjectId
+                { '$unset' : "_id" } # Ne pas prendre les ObjectId
             ])
             resultat = [doc for doc in cur]
             return resultat
 
-        elif q == "gaz":
+
+        elif q == "gaz" :
             cur = cls.db.conso.aggregate([
-                {'$match': {
-                    "fields.filiere": "Gaz"}
+                { '$match': {
+                    "fields.filiere":"Gaz"}
                 },
-                {'$unset': "_id"}  # Ne pas prendre les ObjectId
+                { '$unset' : "_id" } # Ne pas prendre les ObjectId
             ])
             resultat = [doc for doc in cur]
             return resultat
+
+        # cur = cls.db.conso.find({"_id":q})
+        # cur = cls.db.conso.find({ "fields.filiere" : "Electricité" }) # Utilisation de la dot notation mongodb pour les champs nestés
+        # doc = []
+        # for el in cur :
+        #     doc.append(el)
+        # print(doc)
+        # doc = jsonable_encoder(doc[0])
+        else :
+
+            return "Donnée Inexistante"
+##################################FONCTIONS-LUIGI########################################################################
+          
+    @classmethod
+    def get_conso_total_departement(cls,code_dep,filiere):
+
+        if filiere == "gaz":
+            resultat = cls.db.conso.aggregate([{'$match':{"fields.filiere":"Gaz","fields.code_departement":code_dep}},
+                                    {"$group": {"_id" :(code_dep,"Gaz"), "total": { "$sum": "$fields.conso" }}}])
+            return list(resultat)
+            
+        elif filiere == "électricité":
+            resultat = cls.db.conso.aggregate([{'$match':{"fields.filiere":"Electricité","fields.code_departement":code_dep}},
+                                    {"$group": {"_id" :(code_dep,"Electricité"), "total": {"$sum":"$fields.conso"}}}])       
+            return list(resultat)
 
         else:
-            return None
-
-    # Données pour une région
+            return "Données Inexisantes"
+    
     @classmethod
-    def get_region(cls, id):
-        result = cls.collection.aggregate([
-            {'$match': {
-                "fields.code_region": id}
-            }])
-        return result
+    def put_update_document(cls,recordid,champs,donnee):
+        
+        recordid = str(recordid)
+        champs = str(champs)
+        
+        before_update = cls.db.conso.find({"recordid":recordid})
+        #list(before_update)
+        
+        
+        champs = "fields." + str(champs)
+        
+        cls.db.conso.update_one({"recordid":recordid},{"$set":{champs:donnee}})
 
-    # Total conso d'une filière
-    @classmethod
-    def get_somme_fil(cls, fil):
-        fil = str(fil)
-        result = cls.db.conso.aggregate([
-            {"$match": {"fields.filiere": fil}},
-            {"$group": {"_id": fil,
-                        "conso_totale": {"$sum": "$fields.conso"}}
-             }
-        ])
-        result = [r for r in result]
-        return result
+        after_update = cls.db.conso.find({"recordid":recordid})
+        #list(after_update)
+        
+        #return before_update,after_update
+
