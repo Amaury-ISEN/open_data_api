@@ -34,7 +34,6 @@ def get_filiere(q: str):
 @app.get("/items/region/{id}")
 def get_region(id: int):
     da.connexion()
-    da.del_doc(id)
     data = da.get_region(id)
     da.deconnexion()
     return data
