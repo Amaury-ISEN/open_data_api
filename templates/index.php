@@ -7,15 +7,20 @@
     <h2>Région</h2>
 
     <form action="/filtrer" method='POST'>
+
+        <?php
+            $selected = $_POST['reg'];
+        ?>
+
         <label for="reg">Filtrer par région</label>
-        <select class="form-select" name="reg" id="reg" autofocus>
-            <!-- <option value="0">Toutes régions</option> -->
+        <select name="reg" id="reg" autofocus>
+            <option value="0">Toutes régions</option>
             <option value="11">11 - Île-De-France</option>
             <option value="24">24 - Centre-Val de Loire</option>
             <option value="27">27 - Bourgogne-Franche-Comté</option>
             <option value="28">28 - Normandie</option>
             <option value="32">32 - Hauts-de-France</option>
-            <option value="44">44 - Grand Est</option>
+            <option <?php if($selected == '44'){echo("selected");}?> value="44"> 44 - Grand Est</option>
             <option value="52">52 - Pays de la Loire</option>
             <option value="53">53 - Bretagne</option>
             <option value="75">75 - Nouvelle-Aquitaine</option>
@@ -25,10 +30,10 @@
             <option value="94">94 - Corse</option>
         </select>
 
-        <!-- Ce serait bien que ce bloc apparaisse uniquement si une région est choisie ou soit grisé le reste du temps
+        <!-- Ce serait bien que ce bloc apparaisse uniquement si une région est choisie ou soit grisé le reste du temps-->
         <h2>Département</h2>
         <label for="dpt">Filtrer par département</label>
-        <select class="form-select" name="dep" id="dep">
+        <select name="dep" id="dep">
             <option value="0">Tous départements</option>
             <option value="01">01 - AIN</option>
             <option value="02">02 - AISNE</option>
@@ -141,29 +146,23 @@
             <option value="997">997 - EXPATRIES ZONE 3</option>
             <option value="998">998 - EXPATRIES ZONE 4</option>
             <option value="999">999 - ETRANGERS EN FRANCE</option>
-        </select> -->
+        </select>
 
-        <button type="submit" class="btn bg-primary btn-outline text-white ">Consommation</button>
+        <h2>Filière</h2>
+        <label for="fil">Filtrer par filière</label>
+        <select name="fil" id="fil" model=>
+            <option value="0">Toutes filières</option>
+            <option value="gaz">Gaz</option> <!-- La value est en minuscule sans accent exprès pour la query -->
+            <option value="electricite">Electricité</option> <!-- La value est en minuscule sans accent exprès pour la query -->
+        </select>
+
+        <button type="submit">Consommation</button>
     </form>
 
     <p id="contenu">{{contenu}}</p>
-
     <!-- Total, Gaz ou Electricité -->
-    <script>
-        var donnees = {{donnees|safe}}
-    </script>
 
-    <figure class="highcharts-figure">
-        <div id="chart"></div>
-    </figure>
-  
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
-    <script type = "text/javascript" src="{{url_for('static',filename='js/conso_regions.js')}}"></script>
-    <script type = "text/javascript" src="{{url_for('static', filename='js/affichage_chiffres.js')}}"></script>
+    <script src="{{url_for('static', filename='js/affichage_chiffres.js')}}"></script>
 
 {% endblock %}
 

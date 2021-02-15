@@ -8,15 +8,19 @@ function formater_nombre(nombre){
     while (rgx.test(x1)) { // tant qu'on est avant la part décimale et tous les trois chiffres
     x1 = x1.replace(rgx, '$1' + ' ' + '$2'); // insertion des espaces entre les blocs de 3 chiffres
     }
-    return (x1 + x2 + ' Watts'); // on renvoie la part entière espacée et la part décimale avec son point et on ajoute l'unité. 
+    return (x1 + x2 + ' MWh'); // on renvoie la part entière espacée et la part décimale avec son point et on ajoute l'unité. 
    }
 
-var nombre = document.getElementById("nombre").innerHTML
+var nombre = document.getElementById("contenu").innerHTML
 
 if (nombre == '') {
 // Ne rien faire si la string nombre est vide (cela signifie qu'aucun contenu n'a été envoyé par le script python au html)
 }
-else { // Si nombre pas vide, espacer tous les 3 chiffres et arrondir à la deuxième décimale 
+else if (isNaN(nombre) == true) {
+// Si le contenu n'est pas un nombre (ex si c'est un message d'erreur, ne rien faire)
+console.log("coucou", typeof(nombre))
+}
+else {
     nombre = formater_nombre(nombre);
-    document.getElementById("nombre").innerHTML = nombre;    
+    document.getElementById("contenu").innerHTML = nombre;    
 }

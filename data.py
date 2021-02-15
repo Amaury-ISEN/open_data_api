@@ -67,15 +67,87 @@ class DataAccess :
 
     # Récupérer la consommation totale pour toute une filière
     @classmethod
-    def get_somme_fil(cls, fil):
+    def get_conso_fil(cls, fil):
         fil = str(fil)
         if fil == "gaz": fil = "Gaz"
         if fil == "electricite": fil = "Electricité"
-        result = cls.db.conso.aggregate([
+        resultat = cls.db.conso.aggregate([
             {"$match": {"fields.filiere":fil}},
             {"$group": {"_id":fil,
                        "conso_totale":{"$sum":"$fields.conso"}}
             }
             ])
-        result = [r for r in result]
-        return result
+        resultat = [r for r in resultat]
+        return resultat
+
+    @classmethod
+    def get_conso(cls, reg, dep, fil):
+
+        if dep != None : dep = str(dep)
+        if reg != None : reg = int(reg)
+
+        if fil != None :
+            fil = str(fil)
+            if fil == "gaz": fil = "Gaz"
+            if fil == "electricite": fil = "Electricité"
+
+        print("reg", reg)
+        print("dep", dep)
+        print("fil", fil)
+
+        if fil!= None and dep == None and reg == None :
+            print("a")
+            resultat = cls.db.conso.aggregate([
+                {'$match':{"fields.filiere":fil}},
+                {"$group": {"_id" :fil,
+                            "conso_totale": { "$sum": "$fields.conso" }}
+                }
+                ])
+            return list(resultat)
+
+        if fil != None and dep != None :
+            print("b")
+            resultat = cls.db.conso.aggregate([
+                {'$match':{"fields.filiere":fil,
+                            "fields.code_departement":dep}},
+                {"$group": {"_id" :(dep,fil),
+                            "conso_totale": { "$sum": "$fields.conso" }}
+                }
+                ])
+            return list(resultat)
+
+        if fil != None and reg != None :
+            print("c")
+            resultat = cls.db.conso.aggregate([
+                {'$match':{"fields.filiere":fil,
+                            "fields.code_region":reg}},
+                {"$group": {"_id" :(reg,fil),
+                            "conso_totale": { "$sum": "$fields.conso" }}
+                }
+                ])
+            return list(resultat)
+
+        if fil == None :
+            if reg != None: 
+                print("d")
+                resultat = cls.db.conso.aggregate([
+                    {'$match':{"fields.code_region":reg}},
+                    {"$group": {"_id" :(reg),
+                                "conso_totale": { "$sum": "$fields.conso" }}
+                    }
+                    ])
+                return list(resultat)
+
+            if dep != None: 
+                print("e")
+                resultat = cls.db.conso.aggregate([
+                    {'$match':{"fields.code_departement":dep}},
+                    {"$group": {"_id" :(dep),
+                                "conso_totale": { "$sum": "$fields.conso" }}
+                    }
+                    ])
+                return list(resultat)
+
+        return list(resultat)
+            
+        # return "Données Inexisantes"
