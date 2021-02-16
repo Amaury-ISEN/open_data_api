@@ -16,8 +16,6 @@ async def read_root():
 # Renvoyer les données pour toute une filière (gaz/électricite) et ou toute une région :
 @app.get("/items")
 async def get_filiere_reg(fil: str = None, reg: int = None):
-    print(fil)
-    print(reg)
 
     if reg == None : # Ne récupérer que la filière complète si pas de code région
         da.connexion()
@@ -39,10 +37,6 @@ async def get_filiere_reg(fil: str = None, reg: int = None):
         return data
 
 
-#################
-# CONSOMMATIONS #
-#################
-
 # Total consommation d'une filière
 @app.get("/items/conso")
 async def get_conso(fil: str = None, reg: int = None, dep: int = None):
@@ -52,47 +46,27 @@ async def get_conso(fil: str = None, reg: int = None, dep: int = None):
     da.deconnexion()
     return data
 
-    # if fil != None and reg == None and dep == None : # Ne récupérer que la conso filière complète :
-    #     da.connexion()
-    #     data = da.get_conso_fil(fil)
-    #     da.deconnexion()
-    #     return data
-
-    # elif fil != None and dep != None : # Récupérer la filière pour un département :
-    #     print("on est dedans")
-    #     da.connexion()
-    #     data = da.get_conso_dep_fil(dep, fil)
-    #     da.deconnexion()
-    #     return data
-
-    # elif fil == None and reg != None : # Récupérer toute une région si un code région est renseigné
-
-
-# # Run avec auto-reload dès que l'on sauvegarde le code :
-# if __name__ == "__main__":
-#     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
 
 
 
 
+################################## AMAURY ########################################################################
 
-################################## API-AMAURY ########################################################################
-
-# # Renvoyer les données pour toute une filière (gaz/électricite) et pour une région donnée (code région insee) :
-# @app.get("/items")
-# def get_filiere_region(fil: str, reg:int):
-#     da.connexion()
-#     data = da.get_filiere_region(fil = str(fil), reg = str(reg))
-#     da.deconnexion()
-#     return data
+# Renvoyer les données pour toute une filière (gaz/électricite) et pour une région donnée (code région insee) :
+@app.get("/items")
+def get_filiere_region(fil: str, reg:int):
+    da.connexion()
+    data = da.get_filiere_region(fil = str(fil), reg = str(reg))
+    da.deconnexion()
+    return data
 
 
-# @app.get("/items/conso/{code_departement}/{filiere}")
-# def get_conso_total_departement(code_departement: str,filiere: str):
-#     da.connexion()
-#     data = da.get_conso_total_departement(code_departement,filiere)
-#     da.deconnexion()
-#     return data
+@app.get("/items/conso/{code_departement}/{filiere}")
+def get_conso_total_departement(code_departement: str,filiere: str):
+    da.connexion()
+    data = da.get_conso_total_departement(code_departement,filiere)
+    da.deconnexion()
+    return data
 
 # Supprimer un document particulier :
 @app.delete("/items/del={item_id}")
@@ -102,48 +76,47 @@ async def del_doc(item_id: str):
     da.deconnexion()
     return {"Document supprimé"}
 
-##########################################################################################################################################################################
+################################## LUIGI ########################################################################
 
+@app.get("/items/conso/{code_departement}/{filiere}")
+def get_conso_total_departement(code_departement: str,filiere: str):
+    da.connexion()
+    data = da.get_conso_total_departement(code_departement,filiere)
+    da.deconnexion()
+    return data
 
-################################## API-LUIGI ########################################################################
+@app.put("/items/conso/update/{recordid}/{champs}/{donnee}")
+def put_update_document(recordid: str,champs: str,donnee):
+    da.connexion()
+    da.put_update_document(recordid,champs,donnee)
+    da.deconnexion()
 
-# @app.get("/items/conso/{code_departement}/{filiere}")
-# def get_conso_total_departement(code_departement: str,filiere: str):
-#     da.connexion()
-#     data = da.get_conso_total_departement(code_departement,filiere)
-#     da.deconnexion()
-#     return data
-
-# @app.put("/items/conso/update/{recordid}/{champs}/{donnee}")
-# def put_update_document(recordid: str,champs: str,donnee):
-#     da.connexion()
-#     da.put_update_document(recordid,champs,donnee)
-#     da.deconnexion()
-
-##########################################################################################################################################################################
-
-################################## API-CHRISTIAN ########################################################################
+################################## CHRISTIAN ########################################################################
 
 # # Données d'une région
-# @app.get("/items/region/{id}")
-# def get_region(id: int):
-#     da.connexion()
-#     da.del_doc(id)
-#     data = da.get_region(id)
-#     da.deconnexion()
-#     return data
+@app.get("/items/region/{id}")
+def get_region(id: int):
+    da.connexion()
+    da.del_doc(id)
+    data = da.get_region(id)
+    da.deconnexion()
+    return data
 
 
 # # Total consommation d'une filière
-# @app.get("/items/consofil/{fil}")
-# def get_somme_fil(fil: str):
-#     da.connexion()
-#     data = da.get_somme_fil(fil)
-#     da.deconnexion()
-#     return data
+@app.get("/items/consofil/{fil}")
+def get_somme_fil(fil: str):
+    da.connexion()
+    data = da.get_somme_fil(fil)
+    da.deconnexion()
+    return data
 
 ##########################################################################################################################################################################
 
+
+# # Run avec auto-reload dès que l'on sauvegarde le code :
+# if __name__ == "__main__":
+#     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
 
 # Run sans auto-reload
 if __name__ == "__main__":

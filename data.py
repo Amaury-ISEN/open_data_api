@@ -149,5 +149,44 @@ class DataAccess :
                 return list(resultat)
 
         return list(resultat)
+
+
+
+
+################################## LUIGI ########################################################################
+
+    @classmethod
+    def put_update_document(cls,recordid,champs,donnee):
+        
+        recordid = str(recordid)
+        champs = str(champs)
+        
+        before_update = cls.db.conso.find({"recordid":recordid})
+        #list(before_update)
+        
+        
+        champs = "fields." + str(champs)
+        
+        cls.db.conso.update_one({"recordid":recordid},{"$set":{champs:donnee}})
+
+        after_update = cls.db.conso.find({"recordid":recordid})
+        list(after_update)
+        
+        return before_update,after_update
+
+
+    @classmethod
+    def get_conso_total_departement(cls,code_dep,filiere):
+
+        if filiere == "gaz":
+            resultat = cls.db.conso.aggregate([{'$match':{"fields.filiere":"Gaz","fields.code_departement":code_dep}},
+                                    {"$group": {"_id" :(code_dep,"Gaz"), "total": { "$sum": "$fields.conso" }}}])
+            return list(resultat)
             
-        # return "Données Inexisantes"
+        elif filiere == "électricité":
+            resultat = cls.db.conso.aggregate([{'$match':{"fields.filiere":"Electricité","fields.code_departement":code_dep}},
+                                    {"$group": {"_id" :(code_dep,"Electricité"), "total": {"$sum":"$fields.conso"}}}])       
+            return list(resultat)
+
+        else:
+            return "Données Inexisantes"

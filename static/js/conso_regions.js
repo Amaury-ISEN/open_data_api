@@ -1,6 +1,8 @@
 Highcharts.chart('chart', {
     chart: {
-      type: 'bar'
+      type: 'bar',
+      height: 550,
+      width: 1000
     },
     title: {
       text: donnees[0]
@@ -9,7 +11,7 @@ Highcharts.chart('chart', {
       text: 'Source: <a href="https://www.insee.fr/fr/statistiques?debut=0&theme=0">insee.fr</a>'
     },
     xAxis: {
-      categories: ['Retour au domicile', 'Décès'],
+      categories: donnees[4],
       title: {
         text: null
       }
@@ -17,7 +19,7 @@ Highcharts.chart('chart', {
     yAxis: {
       min: 0,
       title: {
-        text: 'Population',
+        text: 'Consommation (en MWh)',
         align: 'high'
       },
       labels: {
@@ -25,7 +27,7 @@ Highcharts.chart('chart', {
       }
     },
     tooltip: {
-      valueSuffix: ' personnes'
+      valueSuffix: '  MWh'
     },
     plotOptions: {
       bar: {
@@ -38,8 +40,8 @@ Highcharts.chart('chart', {
       layout: 'vertical',
       align: 'right',
       verticalAlign: 'top',
-      x: -20,
-      y: 180,
+      x: -5,
+      y: 410,
       floating: true,
       borderWidth: 1,
       backgroundColor:
@@ -51,12 +53,12 @@ Highcharts.chart('chart', {
     },
     series: [{
       name: 'Toutes filières',
-      data: [donnees[1]]
+      data: donnees[1]
     }, {
       name: 'Gaz',
-      data: [donnees[2]]
+      data: donnees[2]
     }, {
       name: 'Electricité',
-      data: [donnees[3]]
+      data: donnees[3]
     }]
   });
