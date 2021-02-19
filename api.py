@@ -79,35 +79,39 @@ async def del_doc(item_id: str):
 ################################## LUIGI ########################################################################
 
 @app.get("/items/conso/{code_departement}/{filiere}")
-def get_conso_total_departement(code_departement: str,filiere: str):
+async def get_conso_total_departement(code_departement: str,filiere: str):
     da.connexion()
     data = da.get_conso_total_departement(code_departement,filiere)
     da.deconnexion()
     return data
 
 @app.put("/items/conso/update/{recordid}/{champs}/{donnee}")
-def put_update_document(recordid: str,champs: str,donnee):
+async def put_update_document(recordid: str,champs: str,donnee):
     da.connexion()
     da.put_update_document(recordid,champs,donnee)
     da.deconnexion()
 
 ################################## CHRISTIAN ########################################################################
 
-# # Données d'une région
-@app.get("/items/region/{id}")
-def get_region(id: int):
+# Données d'une région
+@app.get("/items/region/{reg}")
+async def get_region(reg: int):
+    print("api1")
     da.connexion()
-    da.del_doc(id)
-    data = da.get_region(id)
+    print("api2")
+    data = da.get_region(reg = reg)
+    print("api3")
     da.deconnexion()
+    print("api4")
+    print(data)
     return data
 
 
-# # Total consommation d'une filière
+# Total consommation d'une filière
 @app.get("/items/consofil/{fil}")
-def get_somme_fil(fil: str):
+async def get_conso_fil(fil: str):
     da.connexion()
-    data = da.get_somme_fil(fil)
+    data = da.get_conso_fil(fil = fil)
     da.deconnexion()
     return data
 

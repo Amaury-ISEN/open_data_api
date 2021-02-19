@@ -33,12 +33,18 @@ class DataAccess :
     # Récupérer les données pour toute une région
     @classmethod
     def get_region(cls, reg):
+        print("data 1")
         reg = int(reg)
+        print("data 2")
         resultat = cls.db.conso.aggregate([
-            {'$match': {
-                "fields.code_region": reg}
-            }])
-        return resultat
+                {'$match': {
+                    "fields.code_region": reg}
+                },
+                { '$unset' : "_id" } # Ne pas prendre les ObjectId
+            ])
+        print("data 3")
+        print(resultat)
+        return list(resultat)
 
     @classmethod
     def get_filiere_region(cls, fil, reg):
@@ -53,7 +59,7 @@ class DataAccess :
                         "fields.filiere": fil}
                     },
                     {"$unset":"_id"}
-                    ])
+                ])
         resultat = [r for r in resultat]
         return resultat
     
