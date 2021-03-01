@@ -90,6 +90,7 @@ async def put_update_document(recordid: str,champs: str,donnee):
     da.connexion()
     da.put_update_document(recordid,champs,donnee)
     da.deconnexion()
+    return {"Document modifié"}
 
 ################################## CHRISTIAN ########################################################################
 

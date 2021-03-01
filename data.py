@@ -69,7 +69,7 @@ class DataAccess :
         print(id)
         id = str(id)
         print(id)
-        cls.db.conso.delete_one({"record_id":id})
+        cls.db.conso.delete_one({"recordid":id})
 
     # Récupérer la consommation totale pour toute une filière
     @classmethod
@@ -196,3 +196,4 @@ class DataAccess :
 
         else:
             return "Données Inexisantes"
+            
