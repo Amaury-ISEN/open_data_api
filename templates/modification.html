@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class = "center">
+        Modification de documents
+    </h2>
+    <form  action = "/modifier_document" method="POST" class = "center">
+       
+        <label class = "label" for="nom">Recordid du document :</label>
+        <input type="text" id="nom" required name ="recordid1" value="{{ request.form['recordid1']}}">
+        <label class = "label" for="nom_champs">Champs du document :</label>
+        <input type="text" id="nom_champs" required name ="champs" value="{{ request.form['champs']}}">
+        <label class = "label" for="nom_donnée">Nouvelle donnée :</label>
+        <input type="text" id="nom_donnée" required name ="donnee" value="{{ request.form['donnee']}}">
+        <button type="submit" class="btn bg-primary btn-outline text-white" id="button">Modifier</button>
+        <a href="{{url_for('index')}}"  class="btn bg-primary btn-outline text-white  id="retour" >Retour à l'accueil</a>
+        <a href="{{url_for('suppression')}}" class="btn bg-primary btn-outline text-white" id="supprimer">Supprimer un document</a>
+    </form>
+    
+
+    
+
+{% endblock %}

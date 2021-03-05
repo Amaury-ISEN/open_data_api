@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class = "center">
+        Centre de zigouillement de documents
+    </h2>
+    <form  action = "/zigouiller_document" method="post" class = "center">
+       
+        <label class = "label" for="nom">Recordid du document :</label>
+        <input type="text" id="nom" required name ="recordid" value="{{ request.form['recordid']}}">
+        <button type="submit" class="btn bg-primary btn-outline text-white" id="button">Supprimer</button>
+        <a href="{{url_for('index')}}"  class="btn bg-primary btn-outline text-white  id="retour" >Retour à l'accueil</a>
+    </form>
+    
+
+    
+
+{% endblock %}
