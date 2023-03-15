@@ -1,9 +1,9 @@
-from typing import Optional
+#from typing import Optional
 from fastapi import FastAPI
 import uvicorn # ASGI server
 from data import DataAccess as da
-from fastapi.encoders import jsonable_encoder
-from urllib.parse import urlparse
+#from fastapi.encoders import jsonable_encoder
+#from urllib.parse import urlparse
 
 # from models import Item
 
